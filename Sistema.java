@@ -7,7 +7,7 @@ public class Sistema {
   public static ArrayList<Variable> variables;
 
   public Sistema() {
-    vm = new VM();
+    vm = new VM(aux, variables);
   }
 
   public void loadFile(String name) throws FileNotFoundException {
@@ -84,9 +84,8 @@ public class Sistema {
 
   public static void main(String[] args) throws FileNotFoundException {
     Sistema s = new Sistema();
-    s.loadFile("prog1.txt");
-    System.out.println(aux);
-    System.out.println(variables);
+    s.loadFile("prog1.txt"); // TODO: LER NOMES PELO CONSOLE 
+
   }
 
 }

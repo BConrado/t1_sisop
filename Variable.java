@@ -6,4 +6,8 @@ public class Variable {
     this.name = name;
     this.parametro = parametro;
   }
+
+  public String toString(){
+    return "";
+  }
 }
