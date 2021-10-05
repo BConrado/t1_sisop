@@ -2,8 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CPU {
-  private int pc;
-  private Word currentInst;
+  private Word pc;
   private Integer acc;
 
   public static ArrayList<Word> m;
@@ -18,52 +17,51 @@ public class CPU {
 
   public void run(){
     for (int i = 0; i<m.size(); i++) { 
-      pc = i;
-      currentInst = m.get(i);
+      pc = m.get(i);
       int op1;
-      switch (currentInst.opc) {
+      switch (pc.opc) {
         case add: 
-          if (currentInst.parametro.charAt(0) == '#' ){
-            op1 = Integer.parseInt(String.valueOf(currentInst.parametro.charAt(1)));
+          if (pc.parametro.charAt(0) == '#' ){
+            op1 = Integer.parseInt(String.valueOf(pc.parametro.charAt(1)));
           }else {
-            op1 = find(currentInst.parametro);        
+            op1 = find(pc.parametro);        
           }
           acc+=op1; //ADD 
         break;
 
         case sub:
-          if (currentInst.parametro.charAt(0) == '#' ){
-            op1 = Integer.parseInt(String.valueOf(currentInst.parametro.charAt(1)));
+          if (pc.parametro.charAt(0) == '#' ){
+            op1 = Integer.parseInt(String.valueOf(pc.parametro.charAt(1)));
           }else {
-            op1 = find(currentInst.parametro);        
+            op1 = find(pc.parametro);        
           }
           acc-=op1; //SUB
         break;
 
         case mult: 
-          if (currentInst.parametro.charAt(0) == '#' ){
-            op1 = Integer.parseInt(String.valueOf(currentInst.parametro.charAt(1)));
+          if (pc.parametro.charAt(0) == '#' ){
+            op1 = Integer.parseInt(String.valueOf(pc.parametro.charAt(1)));
           }else {
-            op1 = find(currentInst.parametro);        
+            op1 = find(pc.parametro);        
           }
           acc*=op1; //MULT 
         break;
 
         case div: 
-          if (currentInst.parametro.charAt(0) == '#' ){
-            op1 = Integer.parseInt(String.valueOf(currentInst.parametro.charAt(1)));
+          if (pc.parametro.charAt(0) == '#' ){
+            op1 = Integer.parseInt(String.valueOf(pc.parametro.charAt(1)));
           }else {
-            op1 = find(currentInst.parametro);        
+            op1 = find(pc.parametro);        
           }
           acc/=op1; //DIV
         break;
 
         case load:        
-          acc = find(currentInst.parametro);
+          acc = find(pc.parametro);
         break;
 
         case store: 
-          m.set(i, new Word(currentInst.opc, ""+acc));
+          m.set(i, new Word(pc.opc, ""+acc));
         break;
 
         case brany: 
@@ -72,30 +70,30 @@ public class CPU {
 
         case brpos: 
           if(acc > 0) {
-            int pos = find(currentInst.parametro);
+            int pos = find(pc.parametro);
             i = pos;
           }
         break;
 
         case brzero: 
           if(acc == 0) { 
-            int pos = find(currentInst.parametro);
+            int pos = find(pc.parametro);
             i = pos;
           }
         break;
 
         case brneg: 
           if(acc < 0) {
-            int pos = find(currentInst.parametro);
+            int pos = find(pc.parametro);
             i = pos;
           }
         break;
 
         case syscall:
-          if (Integer.parseInt(currentInst.parametro) == 0){
+          if (Integer.parseInt(pc.parametro) == 0){
             break;
           }else {
-            syscall(Integer.parseInt(currentInst.parametro));
+            syscall(Integer.parseInt(pc.parametro));
           }
         break;
 
