@@ -10,4 +10,8 @@ public class Variable {
   public Integer getVar(){
     return this.parametro;
   }
+
+  public String toString(){
+    return name+"="+parametro;
+  }
 }

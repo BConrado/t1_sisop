@@ -5,6 +5,8 @@ public class CPU {
   private Word pc;
   private Integer acc;
 
+  public int timeCount;
+
   public static ArrayList<Word> m;
   public static ArrayList<Variable> v;
   public static Scanner in;
@@ -15,9 +17,21 @@ public class CPU {
     run();
   }
 
+  public void printMemV(){
+    System.out.println();
+    System.out.println(".data apos execucao");
+    for (Variable var : v) {
+      System.out.println(var);
+    }
+  }
+
   public void run(){
     for (int i = 0; i<m.size(); i++) { 
+      timeCount++;
+      System.out.println("Valor ACC = "+acc);
+      System.out.println("MEM POS "+i);
       pc = m.get(i);
+      System.out.println(" INST = "+ pc.opc +" OP1 = "+ pc.parametro);
       int op1;
       switch (pc.opc) {
         case add: 
@@ -61,11 +75,13 @@ public class CPU {
         break;
 
         case store: 
-          m.set(i, new Word(pc.opc, ""+acc));
+          int index = getIndexVariable(pc.parametro);
+          v.set(index, new Variable(pc.parametro, acc));
         break;
 
         case brany: 
-          
+          Integer labelPos = find(pc.parametro);
+          i = labelPos;
         break;
 
         case brpos: 
@@ -91,6 +107,7 @@ public class CPU {
 
         case syscall:
           if (Integer.parseInt(pc.parametro) == 0){
+            printMemV();
             break;
           }else {
             syscall(Integer.parseInt(pc.parametro));
@@ -104,6 +121,15 @@ public class CPU {
     }
   }
 
+  private int getIndexVariable(String varName){
+    for (int i = 0; i<v.size(); i++) {
+      if(v.get(i).name.equals(varName)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   private Integer find (String label){
     for (Variable var : v) {
       if(var.name.equals(label)) {
@@ -111,10 +137,6 @@ public class CPU {
       }
     }
     return null;
-  }
-  
-  private void jump() {
-
   }
 
   private void syscall(int num) {
