@@ -7,7 +7,7 @@ public class Variable {
     this.parametro = parametro;
   }
 
-  public String toString(){
-    return "";
+  public Integer getVar(){
+    return this.parametro;
   }
 }

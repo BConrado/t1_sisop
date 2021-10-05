@@ -2,28 +2,31 @@ import java.util.*;
 import java.io.*;
 
 public class Sistema {
-  public VM vm;
+  public static VM vm;
   public static ArrayList<Word> aux;
   public static ArrayList<Variable> variables;
 
   public Sistema() {
+    aux = new ArrayList<Word>();
+    variables = new ArrayList<Variable>();
+    
+  }
+  public static void Itinialize(){
     vm = new VM(aux, variables);
   }
 
   public void loadFile(String name) throws FileNotFoundException {
     File f = new File(name);
     Scanner in = new Scanner(f);
-    aux = new ArrayList<Word>();
-    variables = new ArrayList<Variable>();
+    
 
     while (in.hasNextLine()) {
 
-      String fl = in.nextLine();
-      if (fl.equals(".code")) {
+      String label = in.nextLine();
+      if (label.equals(".code")) {
         boolean varAux = true;
         while (varAux) {
           String[] line = in.nextLine().split(" ");
-          System.out.println(line);
           if(line[0].equals(".endcode")){
             varAux = false;
             break;
@@ -47,16 +50,16 @@ public class Sistema {
             case "store":
               aux.add(new Word(Opcode.store, line[3]));
               break;
-            case "brany":
+            case "BRANY":
               aux.add(new Word(Opcode.brany, line[3]));
               break;
-            case "brpos":
+            case "BRPOS":
               aux.add(new Word(Opcode.brpos, line[3]));
               break;
-            case "brzero":
+            case "BRZERO":
               aux.add(new Word(Opcode.brzero, line[3]));
               break;
-            case "brneg":
+            case "BRNEG":
               aux.add(new Word(Opcode.brneg, line[3]));
               break;
             case "syscall":
@@ -66,7 +69,7 @@ public class Sistema {
               break;
           }
         }     
-      } else if (fl.equals(".data")) {
+      } else if (label.equals(".data")) {
         while (true) {
           String[] line = in.nextLine().split(" ");
           if(line[0].equals(".enddata")){
@@ -74,6 +77,8 @@ public class Sistema {
           }
           variables.add(new Variable(line[2], Integer.parseInt(line[3])));
         }
+      } else if (label.charAt(label.length()-1) == ':') {
+        aux.add(new Word(Opcode.label, aux.size()-1+""));
       }
 
     }
@@ -85,7 +90,10 @@ public class Sistema {
   public static void main(String[] args) throws FileNotFoundException {
     Sistema s = new Sistema();
     s.loadFile("prog1.txt"); // TODO: LER NOMES PELO CONSOLE 
+                             // ler mais de um arquivo 
+                            // priorizar execucao 
 
+    Itinialize();                       
   }
 
 }
