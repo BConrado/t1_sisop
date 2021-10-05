@@ -67,19 +67,28 @@ public class CPU {
         break;
 
         case brany: 
-
+          
         break;
 
         case brpos: 
-
+          if(acc > 0) {
+            int pos = find(currentInst.parametro);
+            i = pos;
+          }
         break;
 
         case brzero: 
-
+          if(acc == 0) { 
+            int pos = find(currentInst.parametro);
+            i = pos;
+          }
         break;
 
         case brneg: 
-
+          if(acc < 0) {
+            int pos = find(currentInst.parametro);
+            i = pos;
+          }
         break;
 
         case syscall:
