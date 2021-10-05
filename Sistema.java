@@ -8,7 +8,7 @@ public class Sistema {
   public static int Politica = 0; // 0 preempção 1 round robin
   public static int quantum;
   public static ArrayList<HashMap<Variable, Word>> programas;
-  public static int posi = 0; //quantidade de programas
+  public static int posi = 0; // quantidade de programas
   public static String[] progs = new String[100];
   public static int[] priority = new int[100];
   public static int[] startTime = new int[100];
@@ -105,19 +105,17 @@ public class Sistema {
 
   public static void main(String[] args) throws FileNotFoundException {
 
-    //loadFile("prog3.txt"); // TODO: LER NOMES PELO CONSOLE
-                           // ler mais de um arquivo
-                           // priorizar execucao
-                           
-    
+    // loadFile("prog3.txt"); // TODO: LER NOMES PELO CONSOLE
+    // ler mais de um arquivo
+    // priorizar execucao
+
     Itinialize();
   }
 
   public static void terminal() {
     boolean cond = true;
     Scanner in = new Scanner(System.in);
-    
-    
+
     while (cond) {
 
       printTerminal();
@@ -152,9 +150,17 @@ public class Sistema {
           if (Politica == 0) {
             try {
               startPrograms();
+
             } catch (Exception e) {
-              //TODO: handle exception
+              // TODO: handle exception
             }
+          } else {
+            try {
+              startProgramasNormal();
+            } catch (Exception e) {
+              // TODO: handle exception
+            }
+
           }
           break;
 
@@ -163,7 +169,6 @@ public class Sistema {
           break;
       }
     }
-   
 
   }
 
@@ -173,23 +178,38 @@ public class Sistema {
     System.out.println("3- Run");
   }
 
-  public static void startPrograms() throws FileNotFoundException{
-    HashMap<Integer,String> prioridades = new HashMap<>();
-    for(int i =0; i<posi; i++){
+  public static void startPrograms() throws FileNotFoundException {
+    HashMap<Integer, String> prioridades = new HashMap<>();
+
+    for (int i = 0; i < posi; i++) {
       prioridades.put(priority[i], progs[i]);
     }
-    
-    TreeMap<Integer,String> orderedPriorities = new TreeMap<>(prioridades);
 
+    TreeMap<Integer, String> orderedPriorities = new TreeMap<>(prioridades);
 
     ArrayList<String> programs = new ArrayList<>(orderedPriorities.values());
-   
+
     for (String prog : programs) {
       System.out.println(" --------------------------- ");
       System.out.println(" ---------NEW PROG--------- ");
       System.out.println(" --------------------------- ");
       loadFile(prog);
-      VM v = new VM(memory,variables);
+      VM v = new VM(memory, variables);
+      memory.removeAll(memory);
+      variables.removeAll(variables);
+      System.out.println(" --------------------------- ");
+    }
+  }
+
+  public static void startProgramasNormal() throws FileNotFoundException {
+    List<String> programs = Arrays.asList(progs);
+
+    for (String prog : programs) {
+      System.out.println(" --------------------------- ");
+      System.out.println(" ---------NEW PROG--------- ");
+      System.out.println(" --------------------------- ");
+      loadFile(prog);
+      VM v = new VM(memory, variables);
       memory.removeAll(memory);
       variables.removeAll(variables);
       System.out.println(" --------------------------- ");
