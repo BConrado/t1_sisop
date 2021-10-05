@@ -20,9 +20,9 @@ public class CPU {
     for (int i = 0; i<m.size(); i++) { 
       pc = i;
       currentInst = m.get(i);
+      int op1;
       switch (currentInst.opc) {
         case add: 
-          int op1;
           if (currentInst.parametro.charAt(0) == '#' ){
             op1 = Integer.parseInt(String.valueOf(currentInst.parametro.charAt(1)));
           }else {
@@ -31,16 +31,31 @@ public class CPU {
           acc+=op1; //ADD 
         break;
 
-        case sub: 
-
+        case sub:
+          if (currentInst.parametro.charAt(0) == '#' ){
+            op1 = Integer.parseInt(String.valueOf(currentInst.parametro.charAt(1)));
+          }else {
+            op1 = find(currentInst.parametro);        
+          }
+          acc-=op1; //SUB
         break;
 
         case mult: 
-
+          if (currentInst.parametro.charAt(0) == '#' ){
+            op1 = Integer.parseInt(String.valueOf(currentInst.parametro.charAt(1)));
+          }else {
+            op1 = find(currentInst.parametro);        
+          }
+          acc*=op1; //MULT 
         break;
 
         case div: 
-
+          if (currentInst.parametro.charAt(0) == '#' ){
+            op1 = Integer.parseInt(String.valueOf(currentInst.parametro.charAt(1)));
+          }else {
+            op1 = find(currentInst.parametro);        
+          }
+          acc/=op1; //DIV
         break;
 
         case load:        
